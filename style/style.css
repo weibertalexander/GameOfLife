@@ -1,0 +1,85 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(14, 1, 19);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#gridcontainer {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+}
+
+.cell {
+    width: 15px;
+    height: 15px;
+    margin-top: 1px;
+    margin-left: 1px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: baseline;
+    align-items:baseline;
+
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: rgb(58, 58, 58)
+}
+
+.cellcontainer:hover {
+    background-color: aliceblue;
+}
+
+#buttons {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.button {
+    margin-top: 10px;
+    width: 150px;
+    height: 60px;
+    
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(82, 82, 82);
+
+    border-radius: 10px;
+}
+
+#lifebutton {
+    transition: 0.5s;
+    background-color: rgb(82, 82, 82);
+}
+
+p {
+    line-height: 22px;
+    font-family: "Exo";
+    font-size: 20px;
+    color: white;
+}
+
+#lifebutton:hover {
+    transition: 0.5s;
+    background-color: rgb(14, 145, 84);
+}
+
+#resetbutton {
+    transition: 0.5s;
+    background-color: rgb(82, 82, 82);
+}
+
+#resetbutton:hover {
+    transition: 0.5s;
+    background-color: rgb(95, 3, 3);
+}
