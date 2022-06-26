@@ -8,6 +8,7 @@ https://weibertalexander.github.io/GameOfLife/index.html
 TODO:
 * Add reset button functionality
 * Add speed slider
-* Add settings for the grid size
-* Add themes, and customizable colors
-* Add pre-made patterns to quickly place to grid
+* Add grid size settings
+* Add themes and customizable colors
+* Add pre-made patterns
+* Maybe add sounds?
