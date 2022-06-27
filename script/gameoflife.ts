@@ -1,3 +1,37 @@
+class Audiomanager {
+    private readonly _soundlimit = 25;
+    private readonly _volume = 0.02;
+    private _duration = 0;
+    private _buffer: HTMLAudioElement[] = [];
+
+    constructor(src: string) {
+        for (let i = 0; i < this._soundlimit; i++) {
+            let sound: HTMLAudioElement = new Audio(src);
+            sound.volume = 0.1;
+            sound.loop = false;
+            this._buffer.push(sound);
+        }
+        this._buffer[0].addEventListener("ended", function(){
+            audiomanager.duration = this.currentTime;
+        }, {once: true});
+    }
+
+    public playSound(): boolean {
+        for (let i: number = 0; i < this._soundlimit; i++) {
+            if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
+                this._buffer[i].play();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    set duration(v: number) {
+        this._duration = v;
+        console.log(v);
+    }
+}
+
 class Grid {
     private _grid1: boolean[][] = [];
     private _grid2: boolean[][] = [];
@@ -77,7 +111,9 @@ class Grid {
                 }
                 // Cell is dead.
                 else {
+                    // Cell gets born.
                     if (liveNeighbors == 3) {
+                        audiomanager.playSound();
                         this._grid1[x][y] = true;
                         cell.style.backgroundColor = "rgb(121, 226, 209)";
 
@@ -91,6 +127,8 @@ class Grid {
 
     }
 }
+
+let audiomanager: Audiomanager = new Audiomanager("./sounds/s_7.wav");
 
 let lifebutton: HTMLDivElement = document.getElementById("lifebutton") as HTMLDivElement;
 let lifebuttontext: HTMLParagraphElement = document.getElementById("lifebuttontext") as HTMLParagraphElement;
@@ -140,7 +178,13 @@ function cellClicked(e: Event): void {
     let x: number = +cell.getAttribute("data-x")!;
     let y: number = +cell.getAttribute("data-y")!;
 
-    grid.setGrid(x, y) == true ? cell.style.backgroundColor = "rgb(121, 226, 209)" : cell.style.backgroundColor = "rgb(14, 1, 19)";
+    if (grid.setGrid(x, y) == true) {
+        cell.style.backgroundColor = "rgb(121, 226, 209)"
+        console.log(audiomanager.playSound());
+        
+    } else {
+        cell.style.backgroundColor = "rgb(14, 1, 19)";
+    }
 }
 
 let speedslider: HTMLInputElement = document.getElementById("speedslider") as HTMLInputElement;

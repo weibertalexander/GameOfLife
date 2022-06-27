@@ -10,4 +10,4 @@ TODO:
 * Add grid size settings
 * Add themes and customizable colors
 * Add pre-made patterns
-* Maybe add sounds?
+* Add sound picker

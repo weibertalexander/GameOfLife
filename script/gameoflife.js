@@ -1,4 +1,34 @@
 "use strict";
+class Audiomanager {
+    constructor(src) {
+        this._soundlimit = 25;
+        this._volume = 0.02;
+        this._duration = 0;
+        this._buffer = [];
+        for (let i = 0; i < this._soundlimit; i++) {
+            let sound = new Audio(src);
+            sound.volume = 0.1;
+            sound.loop = false;
+            this._buffer.push(sound);
+        }
+        this._buffer[0].addEventListener("ended", function () {
+            audiomanager.duration = this.currentTime;
+        }, { once: true });
+    }
+    playSound() {
+        for (let i = 0; i < this._soundlimit; i++) {
+            if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
+                this._buffer[i].play();
+                return true;
+            }
+        }
+        return false;
+    }
+    set duration(v) {
+        this._duration = v;
+        console.log(v);
+    }
+}
 class Grid {
     constructor(size) {
         this._grid1 = [];
@@ -67,7 +97,9 @@ class Grid {
                 }
                 // Cell is dead.
                 else {
+                    // Cell gets born.
                     if (liveNeighbors == 3) {
+                        audiomanager.playSound();
                         this._grid1[x][y] = true;
                         cell.style.backgroundColor = "rgb(121, 226, 209)";
                     }
@@ -79,6 +111,7 @@ class Grid {
         this._grid2 = JSON.parse(JSON.stringify(this._grid1));
     }
 }
+let audiomanager = new Audiomanager("./sounds/s_7.wav");
 let lifebutton = document.getElementById("lifebutton");
 let lifebuttontext = document.getElementById("lifebuttontext");
 let isRunning = false;
@@ -115,7 +148,13 @@ function cellClicked(e) {
     let cell = e.target;
     let x = +cell.getAttribute("data-x");
     let y = +cell.getAttribute("data-y");
-    grid.setGrid(x, y) == true ? cell.style.backgroundColor = "rgb(121, 226, 209)" : cell.style.backgroundColor = "rgb(14, 1, 19)";
+    if (grid.setGrid(x, y) == true) {
+        cell.style.backgroundColor = "rgb(121, 226, 209)";
+        console.log(audiomanager.playSound());
+    }
+    else {
+        cell.style.backgroundColor = "rgb(14, 1, 19)";
+    }
 }
 let speedslider = document.getElementById("speedslider");
 speedslider.addEventListener("input", setSpeed);
