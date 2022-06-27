@@ -82,6 +82,7 @@ class Grid {
 let lifebutton = document.getElementById("lifebutton");
 let lifebuttontext = document.getElementById("lifebuttontext");
 let isRunning = false;
+let resetbutton = document.getElementById("resetbutton");
 let gridcontainer = document.getElementById("gridcontainer");
 let cells;
 let gridsize = 50;
@@ -129,5 +130,9 @@ function toggleLifeButton() {
 }
 function gameOfLife() {
     grid.applyRules();
+}
+resetbutton.addEventListener("click", resetGame);
+function resetGame(e) {
+    window.location.reload();
 }
 initGrid();

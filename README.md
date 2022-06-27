@@ -6,7 +6,7 @@ Link to Github Pages:
 https://weibertalexander.github.io/GameOfLife/index.html
 
 TODO:
-* Add reset button functionality
+
 * Add speed slider
 * Add grid size settings
 * Add themes and customizable colors

@@ -94,7 +94,11 @@ class Grid {
 
 let lifebutton: HTMLDivElement = document.getElementById("lifebutton") as HTMLDivElement;
 let lifebuttontext: HTMLParagraphElement = document.getElementById("lifebuttontext") as HTMLParagraphElement;
+
 let isRunning: boolean = false;
+
+let resetbutton: HTMLDivElement = document.getElementById("resetbutton") as HTMLDivElement;
+
 let gridcontainer: HTMLDivElement = document.getElementById("gridcontainer") as HTMLDivElement;
 let cells: HTMLDivElement[];
 
@@ -152,6 +156,13 @@ function toggleLifeButton() {
 
 function gameOfLife() {
     grid.applyRules();
+}
+
+resetbutton.addEventListener("click", resetGame);
+
+function resetGame(e: Event): void {
+    
+    window.location.reload();
 }
 
 initGrid();
