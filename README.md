@@ -7,7 +7,6 @@ https://weibertalexander.github.io/GameOfLife/index.html
 
 TODO:
 
-* Add speed slider
 * Add grid size settings
 * Add themes and customizable colors
 * Add pre-made patterns

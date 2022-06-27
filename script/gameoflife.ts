@@ -128,6 +128,11 @@ function initGrid(): void {
         cell.addEventListener("click", cellClicked)
     });
 
+    if (localStorage.getItem("speedfactor") != null) {
+        speedslider.value = localStorage.getItem("speedfactor")!;
+        speedFactor = +speedslider.value;
+    }
+
 }
 
 function cellClicked(e: Event): void {
@@ -138,6 +143,20 @@ function cellClicked(e: Event): void {
     grid.setGrid(x, y) == true ? cell.style.backgroundColor = "rgb(121, 226, 209)" : cell.style.backgroundColor = "rgb(14, 1, 19)";
 }
 
+let speedslider: HTMLInputElement = document.getElementById("speedslider") as HTMLInputElement;
+speedslider.addEventListener("input", setSpeed);
+
+let speedFactor: number = 5;
+
+function setSpeed(e: Event) {
+    speedFactor = +speedslider.value;
+
+    if (isRunning) {
+        clearInterval(intervalID);
+        intervalID = setInterval(gameOfLife, 1000 / speedFactor);
+    }
+}
+
 let intervalID: number;
 lifebutton.addEventListener("click", toggleLifeButton);
 
@@ -146,13 +165,14 @@ function toggleLifeButton() {
     isRunning = !isRunning;
     if (isRunning) {
         lifebuttontext.textContent = "Stop Game";
-        intervalID = setInterval(gameOfLife, 100);
+        intervalID = setInterval(gameOfLife, 1000 / speedFactor);
     } else {
         lifebuttontext.textContent = "Start Game";
         clearInterval(intervalID!);
         lifebutton.style.backgroundColor = "rgb(82, 82, 82)";
     }
 }
+
 
 function gameOfLife() {
     grid.applyRules();
@@ -161,7 +181,7 @@ function gameOfLife() {
 resetbutton.addEventListener("click", resetGame);
 
 function resetGame(e: Event): void {
-    
+    localStorage.setItem("speedfactor", speedFactor.toString())
     window.location.reload();
 }
 

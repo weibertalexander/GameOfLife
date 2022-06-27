@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div id="gridcontainer">
         <!--Will be filled with grids via typescript-->
     </div>
@@ -16,6 +17,10 @@
         <!--Starts or stops the game of life-->
         <div id="lifebutton" class="button">
             <p id="lifebuttontext">Start Game</p>
+        </div>
+        <div id="slidercontainer">
+            <input type="range" id="speedslider" name="Speed" min="5" max="50" value="15">
+            <label for="Speed" id="speedlabel">Speed</label>
         </div>
         <div id="resetbutton" class="button">
             <p id="resetbuttontext">Reset</p>
