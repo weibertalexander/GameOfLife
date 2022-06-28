@@ -131,7 +131,7 @@ p, label {
 #settingstab {
     position: fixed;
     left: 0px;
-    bottom: 0%;
+    bottom: 50%;
 }
 
 #soundpicker {
