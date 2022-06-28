@@ -5,6 +5,11 @@ Link to Github Pages:
 
 https://weibertalexander.github.io/GameOfLife/index.html
 
+FEATURES:
+* Speed slider
+* Sound picker (total of 8 sounds)
+* Randomize button: Fills grid randomly
+
 TODO:
 
 * Add CSS dropdown settings menu + soundpicker
