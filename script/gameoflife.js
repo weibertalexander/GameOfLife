@@ -5,6 +5,11 @@ class Audiomanager {
         this._volume = 0.02;
         this._duration = 0;
         this._buffer = [];
+        this._src = "";
+        if (src == "") {
+            return;
+        }
+        this._src = src;
         for (let i = 0; i < this._soundlimit; i++) {
             let sound = new Audio(src);
             sound.volume = 0.1;
@@ -16,17 +21,22 @@ class Audiomanager {
         }, { once: true });
     }
     playSound() {
-        for (let i = 0; i < this._soundlimit; i++) {
-            if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
-                this._buffer[i].play();
-                return true;
+        if (this._src != "") {
+            for (let i = 0; i < this._soundlimit; i++) {
+                if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
+                    this._buffer[i].play();
+                    console.log(this._src);
+                    return true;
+                }
             }
         }
         return false;
     }
     set duration(v) {
-        this._duration = v;
-        console.log(v);
+        if (this._src != "") {
+            this._duration = v;
+            console.log(v);
+        }
     }
 }
 class Grid {
@@ -110,8 +120,12 @@ class Grid {
         }
         this._grid2 = JSON.parse(JSON.stringify(this._grid1));
     }
+    deleteHTMLGrid() {
+        let grid = document.getElementById("grid");
+        grid.parentNode.removeChild(grid);
+    }
 }
-let audiomanager = new Audiomanager("./sounds/s_7.wav");
+let audiomanager = new Audiomanager("");
 let lifebutton = document.getElementById("lifebutton");
 let lifebuttontext = document.getElementById("lifebuttontext");
 let isRunning = false;
@@ -121,7 +135,13 @@ let cells;
 let gridsize = 50;
 let grid = new Grid(gridsize);
 // Fill gridcontainer with cell elements
-function initGrid() {
+function initGrid(random) {
+    var _a, _b, _c;
+    if ((_a = document.getElementById("gridcontainer")) === null || _a === void 0 ? void 0 : _a.hasChildNodes) {
+        (_b = document.getElementById("gridcontainer")) === null || _b === void 0 ? void 0 : _b.remove;
+    }
+    let newgrid = document.createElement("div");
+    newgrid.setAttribute("id", "grid");
     for (let i = 0; i < gridsize; i++) {
         let col = document.createElement("div");
         col.setAttribute("class", "gridcol");
@@ -132,9 +152,14 @@ function initGrid() {
             cell.setAttribute("data-y", j.toString());
             col.appendChild(cell);
             grid.setHTMLGrid(i, j, cell);
+            if (random && Math.random() < 0.4) {
+                grid.setGrid(i, j);
+                cell.style.backgroundColor = "rgb(121, 226, 209)";
+            }
         }
-        gridcontainer.appendChild(col);
+        newgrid.appendChild(col);
     }
+    (_c = document.getElementById("gridcontainer")) === null || _c === void 0 ? void 0 : _c.appendChild(newgrid);
     cells = Array.from(document.getElementsByClassName("cell"));
     cells.forEach(cell => {
         cell.addEventListener("click", cellClicked);
@@ -156,11 +181,19 @@ function cellClicked(e) {
         cell.style.backgroundColor = "rgb(14, 1, 19)";
     }
 }
+let soundoptions = Array.from(document.getElementsByClassName("soundoption"));
+soundoptions.forEach(option => {
+    option.addEventListener("input", function () {
+        audiomanager = new Audiomanager(option.value);
+        console.log(option.value);
+    });
+});
 let speedslider = document.getElementById("speedslider");
 speedslider.addEventListener("input", setSpeed);
 let speedFactor = 5;
 function setSpeed(e) {
     speedFactor = +speedslider.value;
+    localStorage.setItem("speedfactor", speedFactor.toString());
     if (isRunning) {
         clearInterval(intervalID);
         intervalID = setInterval(gameOfLife, 1000 / speedFactor);
@@ -189,4 +222,10 @@ function resetGame(e) {
     localStorage.setItem("speedfactor", speedFactor.toString());
     window.location.reload();
 }
-initGrid();
+let randombutton = document.getElementById("randombutton");
+randombutton.addEventListener("click", randomizeGrid);
+function randomizeGrid(e) {
+    grid.deleteHTMLGrid();
+    initGrid(true);
+}
+initGrid(false);
