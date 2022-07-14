@@ -25,7 +25,6 @@ class Audiomanager {
             for (let i = 0; i < this._soundlimit; i++) {
                 if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
                     this._buffer[i].play();
-                    console.log(this._src);
                     return true;
                 }
             }
@@ -35,7 +34,6 @@ class Audiomanager {
     set duration(v) {
         if (this._src != "") {
             this._duration = v;
-            console.log(v);
         }
     }
 }
@@ -168,6 +166,17 @@ function initGrid(random) {
         speedslider.value = localStorage.getItem("speedfactor");
         speedFactor = +speedslider.value;
     }
+    if (localStorage.getItem("sound") != null) {
+        let filename = localStorage.getItem("sound");
+        audiomanager = new Audiomanager(filename);
+        if (filename == "") {
+            let soundoption = document.getElementById("nosound");
+            soundoption.setAttribute("checked", "checked");
+            return;
+        }
+        let soundoption = document.getElementById(filename);
+        soundoption.setAttribute("checked", "checked");
+    }
 }
 function cellClicked(e) {
     let cell = e.target;
@@ -175,7 +184,7 @@ function cellClicked(e) {
     let y = +cell.getAttribute("data-y");
     if (grid.setGrid(x, y) == true) {
         cell.style.backgroundColor = "rgb(121, 226, 209)";
-        console.log(audiomanager.playSound());
+        audiomanager.playSound();
     }
     else {
         cell.style.backgroundColor = "rgb(14, 1, 19)";
@@ -185,7 +194,7 @@ let soundoptions = Array.from(document.getElementsByClassName("soundoption"));
 soundoptions.forEach(option => {
     option.addEventListener("input", function () {
         audiomanager = new Audiomanager(option.value);
-        console.log(option.value);
+        localStorage.setItem("sound", option.value);
     });
 });
 let speedslider = document.getElementById("speedslider");

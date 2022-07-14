@@ -26,7 +26,6 @@ class Audiomanager {
             for (let i: number = 0; i < this._soundlimit; i++) {
                if (this._buffer[i].currentTime == 0 || this._buffer[i].currentTime == this._duration) {
                 this._buffer[i].play();
-                console.log(this._src);
                 return true;
                 }
             }
@@ -37,7 +36,6 @@ class Audiomanager {
     set duration(v: number) {
         if (this._src != "") {
             this._duration = v;
-            console.log(v);
         }
     }
 }
@@ -194,6 +192,17 @@ function initGrid(random: boolean): void {
         speedslider.value = localStorage.getItem("speedfactor")!;
         speedFactor = +speedslider.value;
     }
+    if (localStorage.getItem("sound") != null) {
+        let filename: string = localStorage.getItem("sound")!;
+        audiomanager = new Audiomanager(filename);
+        if(filename == "") {
+            let soundoption: HTMLOptionElement = document.getElementById("nosound") as HTMLOptionElement;
+            soundoption.setAttribute("checked", "checked");
+            return;
+        }
+        let soundoption: HTMLOptionElement = document.getElementById(filename) as HTMLOptionElement;
+        soundoption.setAttribute("checked", "checked");
+    }
 
 }
 
@@ -204,7 +213,7 @@ function cellClicked(e: Event): void {
 
     if (grid.setGrid(x, y) == true) {
         cell.style.backgroundColor = "rgb(121, 226, 209)"
-        console.log(audiomanager.playSound());
+        audiomanager.playSound();
         
     } else {
         cell.style.backgroundColor = "rgb(14, 1, 19)";
@@ -216,7 +225,7 @@ let soundoptions: HTMLInputElement[] = Array.from(document.getElementsByClassNam
 soundoptions.forEach(option => {
     option.addEventListener("input", function() {
         audiomanager = new Audiomanager(option.value);
-        console.log(option.value);
+        localStorage.setItem("sound", option.value);
     });
 });
 
